@@ -13,13 +13,6 @@ def load_data():
 
 	Y_train = Y_train.reshape((1, Y_train.shape[0]))
 	Y_test = Y_test.reshape((1, Y_test.shape[0]))
-	
-	print()
-	print('Loaded',len(X_train),'images for training,','Train data shape=', X_train.shape)
-	print('Loaded',len(Y_train),'images for training,','Train data shape=', Y_train.shape)
-	print('Loaded',len(X_test),'images for testing','Test datashape=', X_test.shape)
-	print('Loaded',len(Y_test),'images for training,','Train data shape=', Y_test.shape)
-
 
 	return X_train, X_test, Y_train, Y_test
 
@@ -27,7 +20,8 @@ def load_image(load_directory):
 	images=[]
 	labels=[]
 	size=64,64
-	print("LOADING DATA FROM:",end = "")
+	print()
+	print("Loading... " + load_directory + ": ",end = "")
 	for folder_index, folder in enumerate(os.listdir(load_directory)):
 		print(folder,end='|')
 		for image in os.listdir(load_directory + "/" + folder):
@@ -35,8 +29,13 @@ def load_image(load_directory):
 			temp_img = cv2.resize(temp_img,size)
 			images.append(temp_img)
 			labels.append(folder_index)
-
-	images = np.array(images)
-	images = images.astype('float32')/255.0
+	# Normalize image vectors
+	images = np.array(images)/255.0
+	images = images.astype('float32')
 	labels = np.array(labels)
 	return images, labels
+
+
+def convert_to_one_hot(Y, C):
+	Y = np.eye(C)[Y.reshape(-1)].T
+	return Y
