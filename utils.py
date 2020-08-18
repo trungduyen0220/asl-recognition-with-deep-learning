@@ -12,9 +12,7 @@ dev_directory = "datasets/asl_alphabet_dev"
 test_more_directory = "datasets/asl_alphabet_test_more"
 
 def load_data():
-	X_train, Y_train = load_image(load_directory = dev_directory)
-	X_test, Y_test = load_image(load_directory = test_more_directory)
-
+	X_train, X_test, Y_train, Y_test = train_test_split(load_image(load_directory = dev_directory), test_size = 0.4)
 	Y_train = Y_train.reshape((1, Y_train.shape[0]))
 	Y_test = Y_test.reshape((1, Y_test.shape[0]))
 
